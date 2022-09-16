@@ -1,3 +1,4 @@
+DFS....
 
 class Solution {
     
@@ -34,3 +35,39 @@ class Solution {
     }
 };
 
+
+BFS.....(topo sort)
+
+class Solution {
+  public:
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(int V, vector<int> adj[]) {
+        vector <int> inDegree(V, 0);
+	    for(int i = 0; i < V; ++i){
+	        for(auto child : adj[i]){
+	            inDegree[child]++;
+	        }
+	    }
+	    queue <int> q;
+	    for(int i = 0; i < V; ++i){
+	        if(inDegree[i] == 0)
+	            q.push(i);
+	    }
+	    
+	    //vector <int> topo;
+	    int ct = 0;
+	    
+	    while(!q.empty()){
+	        int node = q.front();
+	        q.pop();
+	       // topo.push_back(node);
+	        ct++;
+	        for(auto child : adj[node]){
+	            inDegree[child]--;
+	            if(inDegree[child] == 0)
+	                q.push(child);
+	        }
+	    }
+	    return (ct == V  ?  0 : 1);
+    }
+};
