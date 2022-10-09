@@ -1,0 +1,58 @@
+class Solution {
+    int n, m;
+    
+    bool isValid(int x, int y){
+	return x >= 0 && y >=  0 && x < n && y < m;
+}
+
+vector<pair<int, int>> movements = {
+	{-1, 0}, {1, 0}, {0, -1}, {0, 1}
+};
+    
+  public:
+    int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
+                     pair<int, int> destination) {
+        
+        n = grid.size();
+        m = grid[0].size();
+        
+        int srcX = source.first;
+        int srcY = source.second;
+        int desX = destination.first;
+        int desY = destination.second;
+        
+        /*if(srcX == desX && srcY == desY)
+            return 0;*/
+        
+        queue<pair<int,int>> q;
+        vector<vector<int>> dist(n, vector<int>(m, 1e9));
+        vector<vector<int>> vis(n, vector<int>(m, 0));
+        
+	    q.push({srcX, srcY});
+	    vis[srcX][srcY] = 1;
+	    dist[srcX][srcY] = 0;
+	    
+	    while(!q.empty()){
+		auto v = q.front();
+		int x = v.first, y = v.second;
+		q.pop();
+		for( auto movement : movements){
+			int childX = movement.first + x;
+			int childY = movement.second + y;
+			if(!isValid(childX, childY) || grid[childX][childY] != 1)
+				continue;
+			/*if(grid[childX][childY] != 1)
+			    continue;*/
+		    if(!vis[childX][childY]){
+		        q.push({childX, childY});
+		        dist[childX][childY] = dist[x][y] + 1;
+		        vis[childX][childY] = 1;
+		    }
+		}
+		if(dist[desX][desY] != 1e9)
+			return dist[desX][desY];
+		
+	}
+	return -1;
+    }
+};
