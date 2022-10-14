@@ -1,0 +1,33 @@
+class Solution {
+    const int N = 1e5;
+    const int M = 1e5;
+  public:
+    int minimumMultiplications(vector<int>& arr, int start, int end) {
+        
+        vector <int> dist(N, 1e9);
+        dist[start] = 0;
+        queue <pair<int, int>> q;          // < steps, node >
+        q.push({0, start});
+        
+        while(!q.empty()){
+            auto it = q.front();
+            
+            int steps = it.first;
+            int node = it.second;
+            
+            q.pop();
+            
+            for(auto val : arr){
+                int num = (node * val) % M;
+                if(steps + 1 < dist[num]){
+                    dist[num] = steps + 1;
+                    if(num == end)
+                        return steps + 1;
+                    
+                    q.push({steps + 1, num});
+                }
+            }
+        }
+        return -1;
+    }
+};
