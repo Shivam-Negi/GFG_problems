@@ -1,0 +1,30 @@
+int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        // Prim's algo
+        vector <int> vis(V, 0);
+        set <pair <int, int>> s;             //  wt, node
+        s.insert({0, 0});
+        int sum = 0;
+        
+        // T.C. -->  E * log(E)
+        while(s.size() > 0){
+            auto it = *s.begin();
+            int wt = it.first;
+            int node = it.second;
+            
+            s.erase(s.begin());
+            
+            if(vis[node])
+                continue;
+                
+            sum += wt;
+            vis[node] = 1;  
+            for(auto vec : adj[node]){
+                int adjNode = vec[0];
+                int edWt = vec[1];
+                if(!vis[adjNode])
+                    s.insert({edWt, adjNode});
+            }
+        }
+        return sum;
+    }
